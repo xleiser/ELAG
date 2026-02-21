@@ -31,9 +31,9 @@ L_phi_0 = L_phi.subs({psi: psi_0, phi_dot: phi_dot_0, theta_dot: theta_dot_0})
 L_theta_0 = L_theta.subs({psi: psi_0, phi_dot: phi_dot_0, theta_dot: theta_dot_0})
 
 # Solve for phi_dot and theta_dot symbolically
-sol = sp.solve([sp.Eq(L_phi, L_phi_0), sp.Eq(L_theta, L_theta_0)], [phi_dot, theta_dot], dict=True)
-phi_dot_sym = sol[0][phi_dot]
-theta_dot_sym = sol[0][theta_dot]
+sym_sol = sp.solve([sp.Eq(L_phi, L_phi_0), sp.Eq(L_theta, L_theta_0)], [phi_dot, theta_dot], dict=True)
+phi_dot_sym = sym_sol[0][phi_dot]
+theta_dot_sym = sym_sol[0][theta_dot]
 
 # Psi equation of motion
 DLagrangian_Dpsi = sp.diff(Lagrangian, psi)
@@ -81,13 +81,13 @@ def ode(t, y):
 y0 = [psi_00, psi_dot_00, 0, 0]
 t_span = (0, T)
 
-sol = solve_ivp(ode, t_span, y0, t_eval=np.linspace(0, T, 500))
+ode_sol = solve_ivp(ode, t_span, y0, t_eval=np.linspace(0, T, 500))
 
-t = sol.t
-psi_sol = sol.y[0]
-psi_dot_sol = sol.y[1]
-phi_sol = sol.y[2]
-theta_sol = sol.y[3]
+t = ode_sol.t
+psi_sol = ode_sol.y[0]
+psi_dot_sol = ode_sol.y[1]
+phi_sol = ode_sol.y[2]
+theta_sol = ode_sol.y[3]
 phi_dot_sol = phi_dot_num(psi_sol)
 theta_dot_sol = theta_dot_num(psi_sol)
 
